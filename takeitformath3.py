@@ -222,67 +222,6 @@ def generate_tree_diagram_probabilities(n, p_success, with_replacement=True):
     generate_paths(0, [], 1, all_paths)
     return all_paths
 
-def solve_urne_with_replacement(total_balls, red_balls, green_balls, num_draws, target_red, target_green):
-    """Löst das klassische Kugel-Ziehen-Problem mit Zurücklegen
-    
-    Parameter:
-    total_balls - Gesamtanzahl der Kugeln
-    red_balls - Anzahl der roten Kugeln
-    green_balls - Anzahl der grünen Kugeln
-    num_draws - Anzahl der Ziehungen
-    target_red - Gewünschte Anzahl roter Kugeln
-    target_green - Gewünschte Anzahl grüner Kugeln
-    """
-    # Prüfe, ob die Zielwerte zur Anzahl der Ziehungen passen
-    if target_red + target_green != num_draws:
-        print(f"Fehler: Die Summe der Zielwerte ({target_red} + {target_green} = {target_red + target_green}) muss gleich der Anzahl der Ziehungen ({num_draws}) sein.")
-        return None
-    
-    # Berechne die Wahrscheinlichkeiten
-    p_red = red_balls / total_balls
-    p_green = green_balls / total_balls
-    
-    # Berechne die Wahrscheinlichkeit nach der Bernoulli-Formel
-    probability = bernoulli_probability(num_draws, target_red, p_red)
-    
-    print(f"\nZiehen mit Zurücklegen:")
-    print(f"Gesamtanzahl der Kugeln: {total_balls} (davon {red_balls} rot, {green_balls} grün)")
-    print(f"Anzahl der Ziehungen: {num_draws}")
-    print(f"Wahrscheinlichkeit für genau {target_red} rote und {target_green} grüne Kugeln:")
-    print_probability(probability)
-    
-    return probability
-
-def solve_urne_without_replacement(total_balls, red_balls, green_balls, num_draws, target_red, target_green):
-    """Löst das klassische Kugel-Ziehen-Problem ohne Zurücklegen
-    
-    Parameter:
-    total_balls - Gesamtanzahl der Kugeln
-    red_balls - Anzahl der roten Kugeln
-    green_balls - Anzahl der grünen Kugeln
-    num_draws - Anzahl der Ziehungen
-    target_red - Gewünschte Anzahl roter Kugeln
-    target_green - Gewünschte Anzahl grüner Kugeln
-    """
-    # Prüfe, ob die Zielwerte zur Anzahl der Ziehungen passen
-    if target_red + target_green != num_draws:
-        print(f"Fehler: Die Summe der Zielwerte ({target_red} + {target_green} = {target_red + target_green}) muss gleich der Anzahl der Ziehungen ({num_draws}) sein.")
-        return None
-    
-    # Berechne die Wahrscheinlichkeit mit Hilfe des hypergeometrischen Modells
-    favorable_outcomes = binomial_coefficient(red_balls, target_red) * binomial_coefficient(green_balls, target_green)
-    total_outcomes = binomial_coefficient(total_balls, num_draws)
-    
-    probability = favorable_outcomes / total_outcomes
-    
-    print(f"\nZiehen ohne Zurücklegen:")
-    print(f"Gesamtanzahl der Kugeln: {total_balls} (davon {red_balls} rot, {green_balls} grün)")
-    print(f"Anzahl der Ziehungen: {num_draws}")
-    print(f"Wahrscheinlichkeit für genau {target_red} rote und {target_green} grüne Kugeln:")
-    print_probability(probability)
-    
-    return probability
-
 # Menüfunktionen für interaktive Nutzung
 def menu_probability():
     print("\n--- Grundformel der Wahrscheinlichkeit ---")
@@ -504,11 +443,11 @@ def examples():
     
     # Beispiel für Urnen-Problem mit Zurücklegen
     print("\n--- Beispiel für Urnen-Problem mit Zurücklegen ---")
-    solve_urne_with_replacement(11, 4, 7, 3, 1, 2)
+    solve_urne_with_replacement(10, {"rot": 4, "blau": 3, "grün": 3}, 2, {"rot": 1, "blau": 1})
     
     # Beispiel für Urnen-Problem ohne Zurücklegen
     print("\n--- Beispiel für Urnen-Problem ohne Zurücklegen ---")
-    solve_urne_without_replacement(10, 7, 3, 3, 2, 1)
+    solve_urne_without_replacement(10, {"rot": 4, "blau": 3, "grün": 3}, 2, {"rot": 1, "blau": 1})
 
 # Starte das Menü
 if __name__ == "__main__":
