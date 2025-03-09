@@ -347,22 +347,48 @@ def menu_plot_binomial():
     p = float(input("Wahrscheinlichkeit für Erfolg (p): "))
     plot_binomial_distribution(n, p)
 
+
 def menu_urne_problem():
     print("\n--- Urnen-Problem (Ziehen von Kugeln) ---")
-    red_balls = int(input("Anzahl roter Kugeln: "))
-    green_balls = int(input("Anzahl grüner Kugeln: "))
-    total_balls = red_balls + green_balls
-    
+    colors = {}
+    num_colors = int(input("Anzahl der Kugelfarben: "))
+
+    for i in range(num_colors):
+        color_name = input(f"Name der Farbe {i + 1}: ")
+        color_count = int(input(f"Anzahl der {color_name}-farbigen Kugeln: "))
+        colors[color_name] = color_count
+
+    total_balls = sum(colors.values())
     num_draws = int(input("Anzahl der Ziehungen: "))
-    target_red = int(input("Gewünschte Anzahl roter Kugeln: "))
-    target_green = num_draws - target_red
-    
+
+    target_counts = {}
+    for color in colors:
+        target_counts[color] = int(input(f"Gewünschte Anzahl an {color}-Kugeln: "))
+
     replacement = input("Mit Zurücklegen? (j/n): ").lower() in ['j', 'ja', 'yes', 'y']
-    
+
     if replacement:
-        solve_urne_with_replacement(total_balls, red_balls, green_balls, num_draws, target_red, target_green)
+        solve_urne_with_replacement(total_balls, colors, num_draws, target_counts)
     else:
-        solve_urne_without_replacement(total_balls, red_balls, green_balls, num_draws, target_red, target_green)
+        solve_urne_without_replacement(total_balls, colors, num_draws, target_counts)
+
+
+def solve_urne_with_replacement(total_balls, colors, num_draws, target_counts):
+    probability = 1
+    for color, count in target_counts.items():
+        p = (colors[color] / total_balls) ** count
+        probability *= p
+    print(f"Wahrscheinlichkeit mit Zurücklegen: {probability:.6f}")
+
+
+def solve_urne_without_replacement(total_balls, colors, num_draws, target_counts):
+    numerator = 1
+    for color, count in target_counts.items():
+        numerator *= math.comb(colors[color], count)
+    denominator = math.comb(total_balls, num_draws)
+    probability = numerator / denominator
+    print(f"Wahrscheinlichkeit ohne Zurücklegen: {probability:.6f}")
+
 
 def menu_combinatorics():
     print("\n--- Kombinatorik ---")
