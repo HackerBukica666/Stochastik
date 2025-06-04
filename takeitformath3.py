@@ -328,6 +328,26 @@ def solve_urne_without_replacement(total_balls, colors, num_draws, target_counts
     probability = numerator / denominator
     print(f"Wahrscheinlichkeit ohne Zurücklegen: {probability:.6f}")
 
+def binomische_formel(a, b, formel_nummer):
+    """Berechnet eine der binomischen Formeln:
+    1: (a + b)^2
+    2: (a - b)^2
+    3: (a + b)(a - b)
+    """
+    if formel_nummer == 1:
+        result = (a + b) ** 2
+        print(f"({a} + {b})² = {a}² + 2*{a}*{b} + {b}² = {a**2} + {2*a*b} + {b**2} = {result}")
+    elif formel_nummer == 2:
+        result = (a - b) ** 2
+        print(f"({a} - {b})² = {a}² - 2*{a}*{b} + {b}² = {a**2} - {2*a*b} + {b**2} = {result}")
+    elif formel_nummer == 3:
+        result = (a + b) * (a - b)
+        print(f"({a} + {b})*({a} - {b}) = {a}² - {b}² = {a**2} - {b**2} = {result}")
+    else:
+        print("Ungültige Formelnummer (1, 2 oder 3).")
+        return None
+    return result
+
 
 def menu_combinatorics():
     print("\n--- Kombinatorik ---")
@@ -376,6 +396,19 @@ def menu_combinatorics():
             result = permutation_with_repetition(n, repetitions)
             print(f"Permutation mit Wiederholung: {result}")
 
+
+def menu_binomische_formeln():
+    print("\n--- Binomische Formeln ---")
+    print("1: (a + b)² = a² + 2ab + b²")
+    print("2: (a - b)² = a² - 2ab + b²")
+    print("3: (a + b)(a - b) = a² - b²")
+
+    formel = int(input("Wähle eine Formel (1–3): "))
+    a = float(input("a: "))
+    b = float(input("b: "))
+    binomische_formel(a, b, formel)
+
+
 def main_menu():
     while True:
         print("\n===== Stochastik-Rechner =====")
@@ -389,6 +422,7 @@ def main_menu():
         print("8: Binomialverteilung grafisch darstellen")
         print("9: Urnen-Problem (Ziehen von Kugeln)")
         print("10: Kombinatorik")
+        print("11: Binomische Formeln")
         print("0: Beenden")
         
         choice = input("Wähle eine Option: ")
@@ -413,6 +447,8 @@ def main_menu():
             menu_urne_problem()
         elif choice == "10":
             menu_combinatorics()
+        elif choice == "11":
+            menu_binomische_formeln()
         elif choice == "0":
             print("Programm wird beendet.")
             break
